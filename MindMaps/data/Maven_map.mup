@@ -1,0 +1,452 @@
+{
+  "formatVersion": 3,
+  "id": "root",
+  "ideas": {
+    "1": {
+      "title": "Maven",
+      "id": 1,
+      "ideas": {
+        "1": {
+          "title": "Folder Structure\n(plugins interpret folders)",
+          "id": 2,
+          "ideas": {
+            "1": {
+              "title": "src/main/java,\nsrc/main/resources,\nsrc/main/groovy",
+              "id": 5
+            }
+          },
+          "attr": {
+            "style": {
+              "width": 174,
+              "background": "#99CC00"
+            }
+          }
+        },
+        "2": {
+          "title": "Pom.xml",
+          "id": 4,
+          "ideas": {
+            "1": {
+              "title": "repositories",
+              "id": 6,
+              "ideas": {
+                "1": {
+                  "title": "plugin\ndependency \nrelease -enabled\nsnapshots -enabled",
+                  "id": 7,
+                  "attr": {
+                    "style": {
+                      "width": 157
+                    }
+                  }
+                }
+              },
+              "attr": {
+                "style": {
+                  "background": "#FFFF99"
+                }
+              }
+            },
+            "2": {
+              "title": "dependencies",
+              "id": 8,
+              "ideas": {
+                "1": {
+                  "title": "transitive based on version",
+                  "id": 13,
+                  "attr": {
+                    "style": {
+                      "width": 189
+                    }
+                  }
+                },
+                "2": {
+                  "title": "scopes",
+                  "id": 14,
+                  "ideas": {
+                    "1": {
+                      "title": "[compile]-default\n",
+                      "id": 16,
+                      "attr": {}
+                    },
+                    "2": {
+                      "title": "[provided]-not in final artifact",
+                      "id": 17
+                    },
+                    "3": {
+                      "title": "[runtime]-not needed for compilation but execution(not included in final)",
+                      "id": 18,
+                      "attr": {
+                        "style": {
+                          "width": 190
+                        }
+                      }
+                    },
+                    "4": {
+                      "title": "[test] / [system]",
+                      "id": 19
+                    }
+                  },
+                  "attr": {
+                    "style": {
+                      "background": "#FFFF00"
+                    }
+                  }
+                }
+              },
+              "attr": {
+                "style": {
+                  "background": "#FFFF99"
+                }
+              }
+            },
+            "3": {
+              "title": "build",
+              "id": 9,
+              "ideas": {
+                "1": {
+                  "title": "plugins\n(tied to phases)",
+                  "id": 21,
+                  "ideas": {
+                    "1": {
+                      "title": "maven-compiler\n(src =1.7,target=1.7)",
+                      "id": 22,
+                      "attr": {}
+                    },
+                    "2": {
+                      "title": "maven-jar\n(tied to package phase)",
+                      "id": 23
+                    },
+                    "3": {
+                      "title": "maven-source\n(attach-source)",
+                      "id": 24
+                    },
+                    "4": {
+                      "title": "maven-javadoc",
+                      "id": 25
+                    },
+                    "5": {
+                      "title": "maven-others",
+                      "id": 26,
+                      "ideas": {
+                        "1": {
+                          "title": "maven-assembly",
+                          "id": 27
+                        },
+                        "2": {
+                          "title": "maven-dependency\nDependency manipulation (copy, unpack)",
+                          "id": 30
+                        },
+                        "1.5": {
+                          "title": "maven-jarsigner",
+                          "id": 31,
+                          "ideas": {
+                            "1": {
+                              "title": "Config:keystore/storepwd/alias",
+                              "id": 32
+                            }
+                          }
+                        }
+                      },
+                      "attr": {
+                        "style": {
+                          "background": "#FFFF00"
+                        }
+                      }
+                    }
+                  },
+                  "attr": {
+                    "style": {
+                      "background": "#99CC00"
+                    }
+                  }
+                }
+              },
+              "attr": {
+                "style": {
+                  "background": "#FFFF99"
+                }
+              }
+            },
+            "4": {
+              "title": "packagaing",
+              "id": 10,
+              "ideas": {
+                "1": {
+                  "title": "pom,jar,maven-plugin\nwar,ear,par",
+                  "id": 12
+                }
+              },
+              "attr": {
+                "style": {
+                  "background": "#FFFF99"
+                }
+              }
+            }
+          }
+        },
+        "-1": {
+          "title": "Goals and Phases",
+          "id": 3,
+          "ideas": {
+            "1": {
+              "title": "clean\ncompile\npackage\ninstall\ndeploy",
+              "id": 28,
+              "attr": {
+                "style": {
+                  "width": 115
+                }
+              },
+              "ideas": {}
+            }
+          }
+        }
+      },
+      "attr": {
+        "style": {
+          "fontMultiplier": 1.75
+        }
+      }
+    }
+  },
+  "title": "Maven",
+  "attr": {
+    "storyboards": [
+      "Storyboard 1"
+    ],
+    "theme": "topdownStandard"
+  },
+  "theme": {
+    "name": "MindMup Top Down Default",
+    "layout": {
+      "orientation": "top-down",
+      "spacing": {
+        "h": 20,
+        "v": 100
+      }
+    },
+    "node": [
+      {
+        "name": "default",
+        "cornerRadius": 10,
+        "backgroundColor": "#E0E0E0",
+        "border": {
+          "type": "surround",
+          "line": {
+            "color": "#707070",
+            "width": 1
+          }
+        },
+        "shadow": [
+          {
+            "color": "#070707",
+            "opacity": 0.4,
+            "offset": {
+              "width": 2,
+              "height": 2
+            },
+            "radius": 2
+          }
+        ],
+        "text": {
+          "margin": 5,
+          "alignment": "center",
+          "maxWidth": 146,
+          "color": "#4F4F4F",
+          "lightColor": "#EEEEEE",
+          "darkColor": "#000000",
+          "font": {
+            "lineSpacing": 2.5,
+            "lineSpacingPx": 3.25,
+            "size": 9,
+            "sizePx": 12,
+            "weight": "bold"
+          }
+        },
+        "connections": {
+          "default": {
+            "h": "center",
+            "v": "base"
+          },
+          "from": {
+            "horizontal": {
+              "h": "center",
+              "v": "base"
+            }
+          },
+          "to": {
+            "h": "center",
+            "v": "top"
+          }
+        },
+        "decorations": {
+          "height": 20,
+          "edge": "top",
+          "overlap": true,
+          "position": "end"
+        }
+      },
+      {
+        "name": "level_1",
+        "backgroundColor": "#22AAE0"
+      },
+      {
+        "name": "activated",
+        "border": {
+          "type": "surround",
+          "line": {
+            "color": "#22AAE0",
+            "width": 3,
+            "style": "dotted"
+          }
+        }
+      },
+      {
+        "name": "level_1.activated",
+        "border": {
+          "type": "surround",
+          "line": {
+            "color": "#EEEEEE",
+            "width": 3,
+            "style": "dotted"
+          }
+        }
+      },
+      {
+        "name": "selected",
+        "shadow": [
+          {
+            "color": "#000000",
+            "opacity": 0.9,
+            "offset": {
+              "width": 2,
+              "height": 2
+            },
+            "radius": 2
+          }
+        ]
+      },
+      {
+        "name": "collapsed",
+        "shadow": [
+          {
+            "color": "#888888",
+            "offset": {
+              "width": 0,
+              "height": 1
+            },
+            "radius": 0
+          },
+          {
+            "color": "#FFFFFF",
+            "offset": {
+              "width": 0,
+              "height": 3
+            },
+            "radius": 0
+          },
+          {
+            "color": "#888888",
+            "offset": {
+              "width": 0,
+              "height": 4
+            },
+            "radius": 0
+          },
+          {
+            "color": "#FFFFFF",
+            "offset": {
+              "width": 0,
+              "height": 6
+            },
+            "radius": 0
+          },
+          {
+            "color": "#888888",
+            "offset": {
+              "width": 0,
+              "height": 7
+            },
+            "radius": 0
+          }
+        ]
+      },
+      {
+        "name": "collapsed.selected",
+        "shadow": [
+          {
+            "color": "#FFFFFF",
+            "offset": {
+              "width": 0,
+              "height": 1
+            },
+            "radius": 0
+          },
+          {
+            "color": "#888888",
+            "offset": {
+              "width": 0,
+              "height": 3
+            },
+            "radius": 0
+          },
+          {
+            "color": "#FFFFFF",
+            "offset": {
+              "width": 0,
+              "height": 6
+            },
+            "radius": 0
+          },
+          {
+            "color": "#555555",
+            "offset": {
+              "width": 0,
+              "height": 7
+            },
+            "radius": 0
+          },
+          {
+            "color": "#FFFFFF",
+            "offset": {
+              "width": 0,
+              "height": 10
+            },
+            "radius": 0
+          },
+          {
+            "color": "#333333",
+            "offset": {
+              "width": 0,
+              "height": 11
+            },
+            "radius": 0
+          }
+        ]
+      }
+    ],
+    "connector": {
+      "default": {
+        "type": "top-down-s-curve",
+        "label": {
+          "position": {
+            "aboveEnd": 15
+          },
+          "backgroundColor": "white",
+          "borderColor": "white",
+          "text": {
+            "color": "#4F4F4F",
+            "font": {
+              "size": 9,
+              "sizePx": 12,
+              "weight": "normal"
+            }
+          }
+        },
+        "line": {
+          "color": "#707070",
+          "width": 2
+        }
+      }
+    }
+  }
+}
