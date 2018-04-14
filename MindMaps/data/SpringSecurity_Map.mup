@@ -1,0 +1,599 @@
+{
+  "formatVersion": 3,
+  "id": "root",
+  "ideas": {
+    "1": {
+      "title": "Spring Security Layer",
+      "id": 1,
+      "ideas": {
+        "1": {
+          "title": "web.xml",
+          "id": 2,
+          "ideas": {
+            "1": {
+              "title": "filter :(before a servlet is served)\no.s.w.filter.DelegatingFilterProxy\n",
+              "id": 3,
+              "attr": {
+                "position": [
+                  48,
+                  -72.60000610351562,
+                  1
+                ],
+                "style": {
+                  "width": 225
+                }
+              }
+            },
+            "2": {
+              "title": "listener:\no.s.web.context.ContextLoaderListener\n",
+              "id": 4,
+              "ideas": {
+                "1": {
+                  "title": "configLocation:\n/WEB-INF/config/security-config.xml\n",
+                  "id": 6,
+                  "ideas": {
+                    "2": {
+                      "title": "<auth-manager>\n         <auth-provider>",
+                      "id": 9,
+                      "ideas": {
+                        "1": {
+                          "title": "<ldap-auth-provider>",
+                          "id": 10,
+                          "ideas": {
+                            "1": {
+                              "title": "apacheds-all.jar\nspring-security-ldap.jar\n",
+                              "id": 11,
+                              "attr": {
+                                "parentConnector": {
+                                  "label": "maven dependency"
+                                }
+                              }
+                            },
+                            "2": {
+                              "title": "[ldap-server ldif=\"classpath:users.ldif]",
+                              "id": 62,
+                              "attr": {
+                                "style": {
+                                  "width": 214
+                                },
+                                "parentConnector": {
+                                  "label": "LDIF file"
+                                }
+                              }
+                            }
+                          },
+                          "attr": {
+                            "parentConnector": {
+                              "label": "LDAP Provider"
+                            }
+                          }
+                        },
+                        "2": {
+                          "title": "<jdbc-user-service>",
+                          "id": 60,
+                          "ideas": {
+                            "1": {
+                              "title": "User Table\nuser|password|enabled\n",
+                              "id": 61
+                            }
+                          },
+                          "attr": {
+                            "parentConnector": {
+                              "label": "JDBC Provider"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "3": {
+                      "title": "<http>",
+                      "id": 12,
+                      "ideas": {
+                        "1": {
+                          "title": "intercept-url pattern=\"/login.html\" access=\"IS_AUTH_ANONYM\"\nintercept-url pattern=\"/**\" access=\"ROLE_USER\"\nintercept-url pattern=\"/res/**\" access=\"ROLE_ADMIN\"\nform-login login-page=\"\" auth-failure-url=\"\"\nlogout  logout-success-url=\"/logout.html\"\n",
+                          "id": 22,
+                          "attr": {
+                            "style": {
+                              "width": 461
+                            },
+                            "parentConnector": {
+                              "label": "auto-config=\"true\""
+                            }
+                          },
+                          "ideas": {
+                            "1": {
+                              "title": "access-denied-handler error-page=\"403.jsp\"",
+                              "id": 39,
+                              "attr": {
+                                "style": {
+                                  "width": 291
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "2": {
+                          "title": "use-expressions=\"true\"",
+                          "id": 40,
+                          "ideas": {
+                            "1": {
+                              "title": "intercept-url pattern=\"/login.html\" access=\"permitAll\"\nintercept-url pattern=\"/**\" access=\"hasRole('ROLE_USER')\nintercept-url pattern=\"/res/**\" access=\"hasRole('ROLE_USER')\nform-login login-page=\"\" auth-failure-url=\"\"\nlogout  logout-success-url=\"/logout.html\"",
+                              "id": 44,
+                              "attr": {
+                                "style": {
+                                  "width": 452
+                                }
+                              }
+                            }
+                          },
+                          "attr": {
+                            "parentConnector": {
+                              "label": "hasRole, hasPermission, permitAll"
+                            }
+                          }
+                        }
+                      },
+                      "attr": {
+                        "parentConnector": {
+                          "label": "URL level security"
+                        }
+                      }
+                    }
+                  },
+                  "attr": {
+                    "style": {
+                      "width": 145
+                    }
+                  }
+                }
+              }
+            },
+            "3": {
+              "title": "filter-mapping",
+              "id": 5,
+              "ideas": {
+                "1": {
+                  "title": "urlPatterns",
+                  "id": 7
+                }
+              }
+            }
+          }
+        },
+        "2": {
+          "title": "Password Storage",
+          "id": 23,
+          "ideas": {
+            "1": {
+              "title": "security-config.xml\nauthprovider",
+              "id": 24,
+              "ideas": {
+                "2": {
+                  "title": "<password-encoder\nhash=\"md5/bcrypt\">\n",
+                  "id": 26,
+                  "ideas": {
+                    "1": {
+                      "title": "MD5PwdEncoder(pwd,salt)",
+                      "id": 27,
+                      "ideas": {},
+                      "attr": {}
+                    },
+                    "2": {
+                      "title": "BCryptPwdEncoder(pwd)",
+                      "id": 36
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "attr": {
+            "position": [
+              159,
+              72.39999389648438,
+              1
+            ]
+          }
+        },
+        "3": {
+          "title": "Method Level Security\n@PreAuthorize\n@PostAuthorize ( after method executes)\nglobal-method-security\n",
+          "id": 45,
+          "ideas": {},
+          "attr": {
+            "parentConnector": {
+              "label": "uses Expressions"
+            },
+            "style": {
+              "width": 261
+            }
+          }
+        },
+        "13": {
+          "title": "Permissions\nEnable per Object permissions\nhasPermission(#goal,'createGoal')\n[security:expression-handler ref = \"customExpHandler\"]\n\n@PreAuthorize(\"hasRole('ROLE_ADMIN') and hasPermissions(#goal,'createGoal)\")\n@RequestMapping(value=\"add\",method = RequestMethod.GET)",
+          "id": 53,
+          "attr": {
+            "style": {
+              "width": 623
+            },
+            "parentConnector": {
+              "label": "Permissions at domain object level"
+            }
+          },
+          "ideas": {
+            "1": {
+              "title": "Permission Evaluator Interface\nhasPermission(Auth auth,targetDomainObj,Permission)\n",
+              "id": 54,
+              "attr": {
+                "style": {
+                  "width": 349
+                }
+              }
+            },
+            "2": {
+              "title": "Permissions Table\nusername|target|permission\n",
+              "id": 55
+            }
+          }
+        },
+        "-1": {
+          "title": "UI Integration",
+          "id": 13,
+          "ideas": {
+            "1": {
+              "title": "S.Security Tag libs",
+              "id": 15,
+              "ideas": {
+                "1": {
+                  "title": "authorize",
+                  "id": 16,
+                  "ideas": {
+                    "1": {
+                      "title": "TAGProperties:\nurl\nvar\nmethod\naccess={ROLES}\nifAnyGranted=ROLE_ADMIN\nifAllGranted\n",
+                      "id": 21
+                    }
+                  }
+                },
+                "2": {
+                  "title": "maven:\ngroupId=o.s.security\nartifact:spring-security-taglibs\n",
+                  "id": 17,
+                  "attr": {
+                    "style": {
+                      "width": 199
+                    }
+                  }
+                },
+                "1.5": {
+                  "title": "\nauthentication\n",
+                  "id": 18,
+                  "ideas": {
+                    "1": {
+                      "title": "TAGProperties:\nname\nauthorities\ncredentials\nisAuthenticated\nprincipal\n",
+                      "id": 20
+                    }
+                  }
+                },
+                "1.75": {
+                  "title": "accesscontrolList\n",
+                  "id": 19
+                }
+              }
+            }
+          }
+        },
+        "-2": {
+          "title": "https",
+          "id": 37,
+          "ideas": {}
+        }
+      },
+      "attr": {
+        "position": [
+          -69,
+          -623,
+          1
+        ],
+        "style": {
+          "fontMultiplier": 1.5,
+          "width": 216
+        }
+      }
+    },
+    "2": {
+      "title": "Spring Context",
+      "id": 47,
+      "attr": {
+        "position": [
+          1455,
+          -1346.6000061035156,
+          1
+        ]
+      },
+      "ideas": {
+        "11": {
+          "title": "Security/Loader Context\nloaded by loader listener\n",
+          "id": 49,
+          "attr": {
+            "style": {
+              "width": 228
+            },
+            "parentConnector": {
+              "label": "Methos Level Security"
+            }
+          },
+          "ideas": {
+            "1": {
+              "title": "MVC Context\nLoaded by servlet\n",
+              "id": 50,
+              "attr": {
+                "parentConnector": {
+                  "label": "MVC context Subset"
+                }
+              },
+              "ideas": {
+                "1": {
+                  "title": "servlet-config.xml (available to controllers)\n-add security namespace\n<security:global-method-security pre-post-annotations=\"enabled\">\n",
+                  "id": 51,
+                  "attr": {
+                    "style": {
+                      "width": 428
+                    }
+                  },
+                  "ideas": {
+                    "1": {
+                      "title": "Controllers.java\n@PreAuthorize(\"hasRole('ROLE_ADMIN')\")\n@RequestMapping(value=\"add\",method = RequestMethod.GET)\npublic string addCompany(@ModelAttribute(\"goal\")Goal goal...)\n",
+                      "id": 52,
+                      "attr": {
+                        "style": {
+                          "width": 423
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "title": "Spring Security Layer",
+  "links": [],
+  "attr": {
+    "theme": "topdownStandard"
+  },
+  "theme": {
+    "name": "MindMup Top Down Default",
+    "layout": {
+      "orientation": "top-down",
+      "spacing": {
+        "h": 20,
+        "v": 100
+      }
+    },
+    "node": [
+      {
+        "name": "default",
+        "cornerRadius": 10,
+        "backgroundColor": "#E0E0E0",
+        "border": {
+          "type": "surround",
+          "line": {
+            "color": "#707070",
+            "width": 1
+          }
+        },
+        "shadow": [
+          {
+            "color": "#070707",
+            "opacity": 0.4,
+            "offset": {
+              "width": 2,
+              "height": 2
+            },
+            "radius": 2
+          }
+        ],
+        "text": {
+          "margin": 5,
+          "alignment": "center",
+          "maxWidth": 146,
+          "color": "#4F4F4F",
+          "lightColor": "#EEEEEE",
+          "darkColor": "#000000",
+          "font": {
+            "lineSpacing": 2.5,
+            "lineSpacingPx": 3.25,
+            "size": 9,
+            "sizePx": 12,
+            "weight": "bold"
+          }
+        },
+        "connections": {
+          "default": {
+            "h": "center",
+            "v": "base"
+          },
+          "from": {
+            "horizontal": {
+              "h": "center",
+              "v": "base"
+            }
+          },
+          "to": {
+            "h": "center",
+            "v": "top"
+          }
+        },
+        "decorations": {
+          "height": 20,
+          "edge": "top",
+          "overlap": true,
+          "position": "end"
+        }
+      },
+      {
+        "name": "level_1",
+        "backgroundColor": "#22AAE0"
+      },
+      {
+        "name": "activated",
+        "border": {
+          "type": "surround",
+          "line": {
+            "color": "#22AAE0",
+            "width": 3,
+            "style": "dotted"
+          }
+        }
+      },
+      {
+        "name": "level_1.activated",
+        "border": {
+          "type": "surround",
+          "line": {
+            "color": "#EEEEEE",
+            "width": 3,
+            "style": "dotted"
+          }
+        }
+      },
+      {
+        "name": "selected",
+        "shadow": [
+          {
+            "color": "#000000",
+            "opacity": 0.9,
+            "offset": {
+              "width": 2,
+              "height": 2
+            },
+            "radius": 2
+          }
+        ]
+      },
+      {
+        "name": "collapsed",
+        "shadow": [
+          {
+            "color": "#888888",
+            "offset": {
+              "width": 0,
+              "height": 1
+            },
+            "radius": 0
+          },
+          {
+            "color": "#FFFFFF",
+            "offset": {
+              "width": 0,
+              "height": 3
+            },
+            "radius": 0
+          },
+          {
+            "color": "#888888",
+            "offset": {
+              "width": 0,
+              "height": 4
+            },
+            "radius": 0
+          },
+          {
+            "color": "#FFFFFF",
+            "offset": {
+              "width": 0,
+              "height": 6
+            },
+            "radius": 0
+          },
+          {
+            "color": "#888888",
+            "offset": {
+              "width": 0,
+              "height": 7
+            },
+            "radius": 0
+          }
+        ]
+      },
+      {
+        "name": "collapsed.selected",
+        "shadow": [
+          {
+            "color": "#FFFFFF",
+            "offset": {
+              "width": 0,
+              "height": 1
+            },
+            "radius": 0
+          },
+          {
+            "color": "#888888",
+            "offset": {
+              "width": 0,
+              "height": 3
+            },
+            "radius": 0
+          },
+          {
+            "color": "#FFFFFF",
+            "offset": {
+              "width": 0,
+              "height": 6
+            },
+            "radius": 0
+          },
+          {
+            "color": "#555555",
+            "offset": {
+              "width": 0,
+              "height": 7
+            },
+            "radius": 0
+          },
+          {
+            "color": "#FFFFFF",
+            "offset": {
+              "width": 0,
+              "height": 10
+            },
+            "radius": 0
+          },
+          {
+            "color": "#333333",
+            "offset": {
+              "width": 0,
+              "height": 11
+            },
+            "radius": 0
+          }
+        ]
+      }
+    ],
+    "connector": {
+      "default": {
+        "type": "top-down-s-curve",
+        "label": {
+          "position": {
+            "aboveEnd": 15
+          },
+          "backgroundColor": "white",
+          "borderColor": "white",
+          "text": {
+            "color": "#4F4F4F",
+            "font": {
+              "size": 9,
+              "sizePx": 12,
+              "weight": "normal"
+            }
+          }
+        },
+        "line": {
+          "color": "#707070",
+          "width": 2
+        }
+      }
+    }
+  }
+}
