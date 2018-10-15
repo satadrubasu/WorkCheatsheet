@@ -1,0 +1,16 @@
+
+1. GIT Configurations
+    usage: git config [<options>]
+       --system              use system config file
+         --global              use global config file
+           --local               use repository config file
+     
+   a) List the user configured in the global level
+      $ git config --global --list   [ list all config parameters at the global level ]
+      
+   b) Add the user.name and user.email
+      $ git config --global user.name "Satadru Basu"
+      $ git config --global user.email "satadru.basu@gmail.com"
+      $ git config --global help.autocorrect 1
+      
+      
