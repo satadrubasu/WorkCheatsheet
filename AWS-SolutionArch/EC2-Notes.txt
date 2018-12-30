@@ -1,0 +1,28 @@
+### Create Ubuntu-1804 instance from AMI and install Java ###
+
+1. Create a free teir Instance from Amazon Machine Image for Ubuntu1804.
+2. Security Group to have the ssh port enabled and http port enabled
+3. Create a new private/public key pair where AWS will use the public key and we need to store the private key.
+  i) Putty Gen to load this .pem keypair file and save the PRIVATE KEY safely.
+  ii) putty to let login via ssh   
+     a) under Hostname put 
+	     ubuntu@<public IP of the instance>   // ubuntu is the default user for this AMI
+     b) Under Connection->SSH->Auth  , load the private key and save the profile.
+4. Install the needed java ( steps below to install java 8 in ubuntu1804 (OR refer to any online steps )
+   i) Installing Specific Versions of Oracle JDK ( 8)
+     To install Java 8, which is the latest LTS version, first add its package repository:
+	   $ sudo add-apt-repository ppa:webupd8team/java
+   ii) Then update your package list:
+       $ sudo apt update
+  iii) install Java 8:
+       $ sudo apt install oracle-java8-installer
+   iv) Setting the JAVA_HOME Environment Variable
+         set this environment variable, first determine where Java is installed. Use the update-alternatives command:
+	   $ sudo update-alternatives --config java
+	    Copy the path from your preferred installation. Then open /etc/environment and add the following at the end of the file  
+ 		JAVA_HOME="/usr/lib/jvm/java-11-openjdk-amd64/bin/" 
+    v) Now reload this file to apply the changes to your current session:
+	   $ source /etc/environment
+	   $ echo $JAVA_HOME
+       
+### Creating the Gold Image to be used for Autoscaling ####
