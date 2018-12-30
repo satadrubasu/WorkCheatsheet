@@ -1,1 +1,0 @@
-feature2 Branch local changes were stashed and fix of a bug done
