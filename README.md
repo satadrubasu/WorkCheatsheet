@@ -1,10 +1,9 @@
 # Courses
 
-1. Putting up all relevant courses done on various platforms by me .Repo to keep any artifact relevant to certification documentation or Course completion screenshots.
+1. Putting up all relevant courses and relevant reference materials for myself.
+  Repo to keep any artifact relevant to ongoing training / practice / certifications.
 
-2. Also to use this as a repo to keep exploring GIT in terms of tagging and branching.
-   So either on a monthly or quaterly / annual basis create tags / branches.
-   To get back to state of courses completed given these tags.
+2. Put up my mindmap diagrams for ogoing practice.
    
 - Satadru Basu
 
