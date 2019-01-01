@@ -21,7 +21,7 @@
      Encryption of data volumes , boot volumes and snapshots possible
      Designed for annual failure Rate ( 0.1 - 0.2 % ) SLA 99.95 %
 
-   i) EBS SSD Use Cases [ BOOT Vols ]
+   i) EBS SSD Use Cases [ BOOT Vols ] [ Throughput is not considered but IOPS is ]
             GP SSD                  |    Provisioned IOPS SSD
      -------------------------------------------------------------
       System boot vols              | IO Intensive
@@ -33,7 +33,8 @@
       API Name = gp2                |  io1
 
 
-   ii) EBS HDD Vol Types [ CANT BE USED AS BOOT VOL ]
+
+   ii) EBS HDD Vol Types [ CANT BE USED AS BOOT VOL ] [ IOPS is NA but throughput is considered ]
 
           Throughut optimized HDD     |   Cold HDD    
         ------------------------------------------------------------
@@ -49,6 +50,68 @@
 
    Multiple stripped gp2 or standard volumes ( typically RAID 0 Groups for high perf agaisnt RAID 5 )
    Multiple striped PIOPS volumes to have even more higher IOPS.
+
+
+=======  Creating the Volumes direct or from a snapshot ===========
+    ** Volume is made available to instances of the SAME VOLUME.
+
+  I ) GP SSD : Depending on the GiB size chosen , 
+        IOPS =    (Baseline of 3 IOPS per GiB with a minimum of 100 IOPS, burstable to 3000 IOPS )
+           so uptil 33 GiB by default 100IOPS
+           if size is more then IOPS = Size/3 
+
+     Throughput is more applicable to st1 and sc1 family ( HDD )
+
+  II) PIOPS SSD : 
+      i) min 4GiB
+      ii) IOPS can be configured to max of 50/GiB
+           so a storage of 4 GiB can be configure to get a max IOPS of 
+           4 X 50(IOPS/GiB) = 200 not more but less is possible
+           4 X 20(IOPS/GiB) = 80 IOPS
+
+ III) Throughput optimized HDD ( st1 )
+       i)  Min : 500GiB to 16384 GiB 
+           IOPS is NA
+       ii) Throughput is 40MB/s per 1000GiB or 1 TiB
+
+          Min 500   GiB == Throughput of 40MBps/ TiB * 1/2 Tib = 20MBps
+          Max 16384 Gib == Throughput of 40MBps/TiB  * 12  = 500MBps
+
+ IV) COLD Storage HDD ( sc1 )
+      Same as Throughput except
+         12MBps per TiB Volume space
+
+======  EBS Optimized Instance ==========
+
+  Use Cases where the bottleneck is not the IOPS *
+  All volume types will be supported but not all EC2 instance
+  IOPS 3000 to 65000
+  Max Bandwid  400 to 12000 Mbps
+  
+
+  GP-SSD within +-10% of baseline at 99.9 %
+  PIOPS within +-10% of perf at 99.9 %
+
+======  EBS SNAPSHOT  ==========( Only available in same region by default /needs manual copy across region if neededs)
+  1. Absolute Point in Time Snapshot ( if any DB updates ongoing might miss )
+     ( clean way is to shutdown rather than running )
+  2. Supports Incremental snapshots ( only changed blocks saved incrementally )
+  3. Billed only for changed blocks
+      init snapshot it 10 GiB
+      next snapshot is changed only 1 GiB
+  4. init snapshot has bootstrap info etc ,
+      while deleting any snapshot AWS retains right data needed for OS boot etc. 
+  5. EBS uses the S3 for storing the snapshots.( S3 as storage service for snapshots )
+
+ 
+  6. Resizing EBS Volumes , 8GiB snapshot used to create a 30 GiB volume.
+     create snapshot -> create a volume of it with increased size --> attach the new volume to the instance
+  7. Copy a snapshot to another region ( expansion to another geography )
+  
+            
+
+
+
 
 
 
