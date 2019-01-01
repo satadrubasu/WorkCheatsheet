@@ -1,0 +1,57 @@
+#### Instance Storage Types ######
+
+1. Instance Store -> Ephemeral ( local storage for that instance )
+2. EBS --> Multiple tiers
+         i) GPSSD - General purpose USED FOR BOOT
+        ii) PIOPS - higher IOPS for databases ( Can be used for BOOT )
+       iii) Throughput optimized HDD based ( slightly lower tier )
+        iv) Cold HDD
+         v) Magnetic ( phased out )
+
+3. EFS ( Network Attached Storage )
+    - Managed by AWS for scalability etc
+
+----------------------------------------------------
+
+1. EBS :
+     doesnt need to be attached to an instance for existance
+     Cannot be attahched to more than one instance at a time
+     can be transferred b/w AZ
+     AWS volume data is replicated across multiple servers in AZ
+     Encryption of data volumes , boot volumes and snapshots possible
+     Designed for annual failure Rate ( 0.1 - 0.2 % ) SLA 99.95 %
+
+   i) EBS SSD Use Cases [ BOOT Vols ]
+            GP SSD                  |    Provisioned IOPS SSD
+     -------------------------------------------------------------
+      System boot vols              | IO Intensive
+      virtual Desktops              | NoSQL / SQL DBs
+      Dev/Test
+      MAX Throughput = 160MB/s      |  MAX Throughput = 320 MB/s
+      MAX IOPS / vol = 10000        |  Max IOPS/vol = 20000
+      MAX IOPS / instance = 65K     |   Max IOPS/instance = 65K
+      API Name = gp2                |  io1
+
+
+   ii) EBS HDD Vol Types [ CANT BE USED AS BOOT VOL ]
+
+          Throughut optimized HDD     |   Cold HDD    
+        ------------------------------------------------------------
+         Infrequent Data Access       | Throughput oriented for large vols of data
+         Streaming                    | lowest storage cost
+         Big Data / Logs              |
+         Max IOPS / vol = 500         | Max IOPS / vol = 250
+         Max Throughput = 500 MB/s    | Max Throughput = 250 MB/s
+         API name = st1               | sc1
+
+   
+ ---------------- Increasing IOPS Performance ------------------
+
+   Multiple stripped gp2 or standard volumes ( typically RAID 0 Groups for high perf agaisnt RAID 5 )
+   Multiple striped PIOPS volumes to have even more higher IOPS.
+
+
+
+
+
+
