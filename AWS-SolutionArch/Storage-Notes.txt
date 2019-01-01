@@ -107,6 +107,24 @@
   6. Resizing EBS Volumes , 8GiB snapshot used to create a 30 GiB volume.
      create snapshot -> create a volume of it with increased size --> attach the new volume to the instance
   7. Copy a snapshot to another region ( expansion to another geography )
+
+
+
+===========   Amazon Elastic File System ( Petabytes scale ) =============
+
+  1. Petabyte scale of data
+  2. EFS are elastic and automatically grow or shrink as we add/remove files
+  3. store redundantly across multiple AZs
+  4. 1 to 1000s of EC2 instances from multiple AZ can connect concurrently
+  5. Use cases : Big Data and analytics / media processing / workflows / Content managaement etc
+  6. Default 10 EFS per AWS account per region. ( contact Amazon for more )
+  7. On -premise access enabled via direct connect
+  8. NFS 4.1 version supported
+  9. After creation , we can directly mount these NFS to an EC2 instances.
+     
+
+
+
   
             
 

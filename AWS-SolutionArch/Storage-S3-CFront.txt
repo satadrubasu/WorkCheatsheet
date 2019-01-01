@@ -1,0 +1,50 @@
+Storage and Archive by Amazon
+--------------------------------
+
+1. Amazon S3 - Object based storage
+
+2. Amazon Glacier :
+    i) long term storage and low cost
+
+3. Amazon EBS : Block Storage
+
+4. Amazon EFS
+
+5. AWS Import/Export [ Take out from AWS or put to AWS ] 
+   Transfer large data(Petabytes) to AWS 
+   Client sends **VARIOUS FORMS OF MEDIA** to be exported / imported
+
+6. AWS Snowball
+   Hardware/Software Service
+   **Special AWS device**  SHIPPED by AWS to transfer data and ship back to AWS ( encrypted )
+
+7. AWS Storage Gateway - Appliance for hybrid connectivity
+
+============================================
+   I)   Amazon S3 variants 
+--------------------------------------------
+  i) S3 Standard - Fastest but costliest
+                 - Max Object Size : 5TB
+                 - Retreival Fee : NA
+                 - Min Storage Duration : NA
+
+  ii) S3 - Infrequent Access : 
+         Files not to be archived yet but still infrequent.
+         less costly than S3.
+        - Max Object Size : 5TB
+        - Retreival Fee : Per GB
+        - Min Storage Duration : 30 days
+
+  iii) S3 RRS ( Reduced Redundancy )
+        - further reduced costs
+        - Max Object Size : NA
+        - Retreival Fee : NA
+        - Min Storage Duration : NA
+        
+
+   iV) Glacier:
+        - Retreival Fee : Per GB
+        - Min Storage Duration : 90 days
+        - Max Object Size : NA
+        - Max Archive Size : 4TB
+
