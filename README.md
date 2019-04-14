@@ -3,7 +3,7 @@
 1. Putting up all relevant courses and relevant reference materials for myself.
   Repo to keep any artifact relevant to ongoing training / practice / certifications.
 
-2. Put up my mindmap diagrams for ogoing practice.
+2. Put up my mindmap diagrams for ogoing project POCs / demo / exerise /practice.
    
 - Satadru Basu
 
