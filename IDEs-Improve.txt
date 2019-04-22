@@ -1,0 +1,40 @@
+Visual Code vs Spring tools 4 ( Lot of enhancements )
+
+ECLIPSE PERFORMANCE TUNE
+
+A)  Improve Eclipse Performance 
+---------------------------------
+ I) eclipse.ini
+   i) use latest jre for -vm <arg>
+   ii) user Server VM
+      -server
+   iii) -XX: +UseParallelGC
+   iv) Use enough heap and increase Young Generation Space
+      -Xms512m -Xmx2g
+      -Xmn512m
+   v) Disable class validation - more of security related validation
+      -Xverify:none
+   vi) -XX: +AggresiveOpts
+   
+ II) Eclipse Installation and Features
+    i) Expensive : Mylyn/Subversion - uninstall these features if not used.
+    ii) Workspace not in Network Share
+    
+III) Preferences / Settings
+   i) Startup/Shutdown plugins - configure.
+   ii) Spelling - disable
+   iii) Java-Editor-Folding  ( Disable )
+   iV) Validators - choose wisely
+   v) General-appearance-Enable animations ( Disable )
+   vi) Team-Git-Label Decorations --FileIcon Based on Content Analysis ( Disable )
+   vii) Maven-User Interface - Open XML page in the pom editor by default(Enable)
+        Maven- Download repo index updates on startup ( Disable )
+        Maven - Do not automatically update dependencies from remote repos ( Enable )
+   viii) Java-Compiler-Builders- Filtered resources (...,*.launch,.gitignore )
+   ix) CLose unused project else eclipse links to source project , otherwise will simply pick from jar target.
+   
+IV) Metadata Cleanup
+    Clean JDT Index - <WS/.metadata/.plugins/org.eclipse.jdt.core
+    Resource History - <WS/.metadata/.plugins/org.eclipse.core.resources/.history
+    PDE caches - <WS/.metadata/.plugins/org.eclipse.pde.code
+     
