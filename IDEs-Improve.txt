@@ -1,4 +1,7 @@
-Visual Code vs Spring tools 4 ( Lot of enhancements )
+Contents:
+  # Visual Code vs Spring tools 4 ( Lot of enhancements )
+  # Eclipse Performance Tuning for performance
+  # VSCode migration notes/todos
 
 ECLIPSE PERFORMANCE TUNE
 
@@ -37,4 +40,9 @@ IV) Metadata Cleanup
     Clean JDT Index - <WS/.metadata/.plugins/org.eclipse.jdt.core
     Resource History - <WS/.metadata/.plugins/org.eclipse.core.resources/.history
     PDE caches - <WS/.metadata/.plugins/org.eclipse.pde.code
+    
+    
+## VSCODE
+1. VSCode workspace storage goes to a default location - which seems to grow forever..find configuration/fix for this
+  appData\Roaming\Code\User\workspaceStorage\
      
