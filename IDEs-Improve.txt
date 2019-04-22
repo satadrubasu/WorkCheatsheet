@@ -42,7 +42,13 @@ IV) Metadata Cleanup
     PDE caches - <WS/.metadata/.plugins/org.eclipse.pde.code
     
     
-## VSCODE
+####################### VSCODE #############################
 1. VSCode workspace storage goes to a default location - which seems to grow forever..find configuration/fix for this
-  appData\Roaming\Code\User\workspaceStorage\
+  c:\Users\<user>\AppData\Roaming\Code\User\workspaceStorage\
+  
+  A: Start VSCode with :(Configure shortcut like this argument)
+      code.exe --user-data-dir c:\ws\vs\localStorage
+      
+      with the latest updates as of today globalStorage & locaStorage is being created.
+      VSCode still hasn't kept this as an configurable setting otherwise.
      
