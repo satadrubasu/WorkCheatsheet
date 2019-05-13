@@ -1,3 +1,11 @@
+### Architect Associate - Learning Sequence #######
+  1. https://aws.amazon.com/training/path-architecting/
+    i) AWS Certified Cloud Practitioner
+
+
+
+
+
 # AWS Practice Notes ( reference )
 
 

@@ -1,3 +1,4 @@
+<!-- Escape sequence is \ -->
 <!-- HEADINGS -->
        # Heading 1
        ## Heading 2
@@ -46,6 +47,6 @@
      
      
 <!-- TABLES -->
-  | NAme | Email |
+  | Name | Email |
   |------|-------|
   | data | data  |         
