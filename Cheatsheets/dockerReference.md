@@ -8,9 +8,9 @@
   ```
   docker run -d redis      // run latest image
   docker run -d redis:3.2   // run version 3.2 of image
-  docker run -d --name redisHost -p <host-port>:<container-port> redis:latest ** // container port for redis 6379 by default
-  docker run -d --name redisMapped -v /opt/docker/data/redis:/data redis**
-```
+  docker run -d --name redisHost -p <host-port>:<container-port> redis:latest
+  docker run -d --name redisMapped -v /opt/docker/data/redis:/data redis
+ ```
 #### RUN Foreground 
   ```
   docker run -it ubuntu bash   // access bash shell inside of a container which was just run
