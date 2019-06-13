@@ -2,8 +2,9 @@
 
 #SCENARIO 1 - Intro
 ## SEARCH in the docker repos
-**docker search redis**
-
+--bash
+docker search redis
+bash
 ## RUN docker images
 docker run -d redis       // run latest image
 docker run -d redis:3.2   // run version 3.2 of image
