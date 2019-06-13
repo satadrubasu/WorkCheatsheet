@@ -1,0 +1,49 @@
+# Docker Reference commands the REDIS example
+
+#SCENARIO 1 - Intro
+## SEARCH in the docker repos
+docker search redis
+
+## RUN docker images
+docker run -d redis       // run latest image
+docker run -d redis:3.2   // run version 3.2 of image
+docker run -d --name redisHost -p <host-port>:<container-port> redis:latest  // container port for redis 6379 by default
+docker run -d --name redisMapped -v /opt/docker/data/redis:/data redis
+
+### Foreground 
+ docker run -it ubuntu bash   // access bash shell inside of a container which was just run
+ docker run ubuntu ps  // launches an Ubuntu container and executes the command ps
+ 
+
+## STATUS commands
+docker ps        // list all running containers
+docker inspect <friendly-name| container-id>    // more details of the running container
+docker logs <friendly-name| container-id>   // display messages the container has written to std error or stdout
+docker images    // list os all images on the host
+
+## PERSIST data external to the container as it gets destroyed 
+  // Containers are designed to be stateless.Binding of volumes using options
+  // option -v <host-dir>:<container-dir>
+  // Docker uses $PWD as a placeholder for the current directory.
+  
+docker run -d --name redisMapped -v /opt/docker/data/redis:/data redispwd
+docker run -d --name redisMapped -v "$PWD/data"
+
+# SCENARIO 2 
+How to create a Docker Image for running a static HTML website using Nginx. Docker Images are built based on the contents of a Dockerfile
+
+## create a Dockerfile and also have some index.html in the same location
+Dockerfile -->
+  FROM nginx:alpine
+  COPY . /usr/share/nginx/html
+  
+## BUILD Dockerfile 
+docker build -t <build-directory>
+ // The -t parameter allows you to specify a tag, commonly used as a version number
+
+docker build -t webserver-image:v1 .  // built image will have tag of v1
+docker images      // list all images on the host
+
+
+
+
