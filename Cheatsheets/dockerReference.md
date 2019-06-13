@@ -2,23 +2,25 @@
  Acknowledgement to katacoda for reference of this practice !!
 
 #### SEARCH in the docker repos
-  docker search redis
+  > docker search redis
 
 #### RUN docker images
+  ```
   docker run -d redis      // run latest image
   docker run -d redis:3.2   // run version 3.2 of image
   docker run -d --name redisHost -p <host-port>:<container-port> redis:latest ** // container port for redis 6379 by default
   docker run -d --name redisMapped -v /opt/docker/data/redis:/data redis**
-
+```
 #### RUN Foreground 
+  ```
   docker run -it ubuntu bash   // access bash shell inside of a container which was just run
   docker run ubuntu ps  // launches an Ubuntu container and executes the command ps
-
+  ```
 #### STATUS commands
-  docker ps        // list all running containers
-  docker inspect <friendly-name| container-id>   // more details of the running container
-  docker logs <friendly-name| container-id>   // display messages the container has written to std error or stdout
-  docker images    // list os all images on the host
+ > docker ps        // list all running containers
+ > docker inspect <friendly-name| container-id>   // more details of the running container
+ > docker logs <friendly-name| container-id>   // display messages the container has written to std error or stdout
+ > docker images    // list os all images on the host
 
 #### PERSIST data external to the container as it gets destroyed 
   // Containers are designed to be stateless.Binding of volumes using options
