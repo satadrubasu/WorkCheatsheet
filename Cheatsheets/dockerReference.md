@@ -74,15 +74,16 @@ To keep build times to a minimum, Docker caches the results of executing a line 
 With NPM we only want to re-run npm install if something within our package.json file has changed. If nothing has changed then we can use the cache version to speed up deployment. By using COPY package.json <dest> we can cause the RUN npm install command to be invalidated if the package.json file has changed. If the file has not changed, then the cache will not be invalidated, and the cached results of the npm install command will be used
  
 #### Dockerfile
-  *FROM node:10-alpine
+  ```
+   FROM node:10-alpine
    RUN mkdir -p /src/app
-    WORKDIR /src/app
-    COPY package.json /src/app/package.json
-    RUN npm install
+   WORKDIR /src/app
+   COPY package.json /src/app/package.json
+   RUN npm install
    COPY . /src/app
    EXPOSE 3000
-   CMD [ "npm", "start" ]*
-
+   CMD [ "npm", "start" ]
+  ```
    __docker build -t my-nodejs-app .__
    __docker run -d --name runningNodejsAapp -p 3000:3000 my-nodejs-app__
    __curl http://docker:3000__
@@ -92,4 +93,35 @@ After we've installed our dependencies, we want to copy over the rest of our app
  #### ENVIRONMENT VARIABLE
   environment variables can be defined when we launch the container. E.g with Node.js applications, define an environment variable for NODE_ENV when running in production.Using -e option, set the name and value as 
  > __-e NODE_ENV=production__
+  ```
   docker run -d --name my-production-running-app __-e NODE_ENV=production__ -p 3000:3000 my-nodejs-app
+  ```
+ ###  SCENARIO : Optimise Dockerfile using the OnBuild instruction
+   While Dockerfile's are executed in order from top to bottom, we can trigger an instruction to be executed later when the image is used as the base for another image.
+
+The result is you can delay your execution to be dependent on the application which you're building, for example the application's package.json file.
+
+Below is the Node.js OnBuild Dockerfile. Unlike in our previous scenario the application specify commands have been prefixed with ONBUILD.
+
+FROM node:7
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+ONBUILD COPY package.json /usr/src/app/
+ONBUILD RUN npm install
+ONBUILD COPY . /usr/src/app
+CMD [ "npm", "start" ]
+The result is that we can build this image but the application specific commands won't be executed until the built image is used as a base image. They'll then be executed as part of the base image's build.
+
+### Scenario : .dockerignore (Large temp folders / passwords etc).
+    Just like .gitignore use this file to add all filre / folders / expressions to ignore copying to image
+    Ignore sending tmp files for filesize calculation to engine during build
+
+### Scenario : Data Containers alternative to -v <host-dir>:<container-dir>
+    sole responsibility is to be a place to store/manage data.
+    use busybox as the base as it's small and lightweight
+ 
+    Create a Data Container for storing configuration files using 
+    > Create a Data Container for storing configuration files using 
+    
+    
+ 
