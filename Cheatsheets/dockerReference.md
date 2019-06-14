@@ -1,4 +1,4 @@
-# Docker Reference commands the REDIS example
+### Docker Reference commands the REDIS example
  Acknowledgement to katacoda for reference of this practice !!
 
 #### SEARCH in the docker repos
@@ -113,15 +113,22 @@ The result is that we can build this image but the application specific commands
   Ignore sending tmp files for filesize calculation to engine during build
 
 ### Scenario : Data Containers alternative to -v <host-dir>:<container-dir>
-    Note : __docker ps__  Data containers are not listed in docker ps
-    Sole responsibility is to be a place to store/manage data.using __busybox__ as the base as it's small and lightweight
-    Create a Data Container for storing configuration files using 
-> Create a Data Container for storing configuration files using 
-    copy config.conf file into our dataContainer and the dir config.
-> docker cp config.conf dataContainer:/config/
+  __docker ps__  : Data containers are not listed in docker ps
+ Sole responsibility is to be a place to store/manage data.Using __busybox__ as the base as it's small and lightweight image.
  
- #### Mount volumes
- Now our Data Container has our config, we can reference the container when we launch dependent containers requiring the configuration file.Using the __--volumes-from__ <container> option we can use the mount volumes from other containers inside the container being launched. In this case, we'll launch an Ubuntu container which has reference to our Data Container. When we list the config directory, it will show the files from the attached container.
-    
-> docker run --volumes-from dataContainer ubuntu ls /config
+  1. Create a Data Container for storing configuration files using 
+     > docker create -v /config --name dataContainer busybox
+  2. Copy config.conf file into our dataContainer and the dir config.
+     > docker cp config.conf dataContainer:/config/
+ 
+ #### Mount volumes FROM
+ Now our Data Container has our config, we can reference the container when we launch dependent containers requiring the configuration file.Using the __--volumes-from__ <container> option we can use the mount volumes from other containers inside the container being launched. 
+  3. launch an Ubuntu container which has reference to our Data Container. When we list the config directory, it will show the files from the attached(/mounted dataContainer) container.
+    > docker run --volumes-from dataContainer ubuntu ls /config
+    >  * /config directory already existed then, the volumes-from would override and be the directory used*
+
+  4. Export / Import Containers( DATA )
+     > docker export dataContainer > dataContainer.tar
+     > docker import dataContainer.tar
+  
  
