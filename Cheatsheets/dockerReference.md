@@ -62,9 +62,9 @@ In this example, NGINX would be the entrypoint with -g daemon off; the default c
   EXPOSE 8000-8900 // expose range of ports
   ```
 ### 3.0 Scenario : how to deploy a Node.js application within a container + CACHE Concepts
-General structure for a node js application is one which has a set of files :
+File-structure (node js application):
  Makefile , app.js , bin/ , package.json , public/ , routes/ , views/
- The next stage is to install the dependencies required to run the application. For Node.js this means running NPM install.
+ The next stage is to install the dependencies required to run the application.For Node.js this means running NPM install.
 
 To keep build times to a minimum, Docker caches the results of executing a line in the Dockerfile for use in a future build. If something has changed, then Docker will invalidate the current and all following lines to ensure everything is up-to-date.
 
