@@ -1,35 +1,34 @@
-### Docker Reference commands the REDIS example
- Acknowledgement to katacoda for reference of this practice !!
-
-#### SEARCH in the docker repos
+### Docker Reference commands usecase based
+ 
+#### 1.1 SEARCH in the docker repos
   > docker search redis
 
-#### RUN docker images
+#### 1.2 RUN docker images
   ```
   docker run -d redis      // run latest image
   docker run -d redis:3.2   // run version 3.2 of image
   docker run -d --name redisHost -p <host-port>:<container-port> redis:latest
   docker run -d --name redisMapped -v /opt/docker/data/redis:/data redis
  ```
-#### RUN Foreground 
+#### 1.3 RUN Foreground 
   ```
   docker run -it ubuntu bash   // access bash shell inside of a container which was just run
   docker run ubuntu ps         // launches an Ubuntu container and executes the command ps
   ```
-#### STATUS commands
+#### 1.4 STATUS commands
   ```
   docker ps                                     // list all running containers
   docker inspect <friendly-name| container-id>  // more details of the running container
   docker logs <friendly-name| container-id>     // logs, the container wrote to stderr/stdout
   docker images                                 // list os all images on the host
   ```
-#### PERSIST data external to the container as it gets destroyed 
+#### 1.5 PERSIST data external to the container as it gets destroyed 
   Containers are designed to be stateless.Binding of volumes using options.Docker uses $PWD as a placeholder for the current directory.
   option -v <host-dir>:<container-dir>
   > docker run -d --name redisMapped -v /opt/docker/data/redis:/data redispwd
   > docker run -d --name redisMapped -v "$PWD/data"
 
-### SCENARIO 
+### 2.0 SCENARIO 
 How to create a Docker Image for running a static HTML website using Nginx. Docker Images are built based on the contents of a Dockerfile.Note Dockerfile should be at the root folder where other needful files are stored.
 
 #### CREATE a Dockerfile and also have some index.html in the same location
@@ -62,7 +61,7 @@ In this example, NGINX would be the entrypoint with -g daemon off; the default c
   EXPOSE 80 443   // expose specific ports
   EXPOSE 8000-8900 // expose range of ports
   ```
-### Scenario : how to deploy a Node.js application within a container + CACHE Concepts
+### 3.0 Scenario : how to deploy a Node.js application within a container + CACHE Concepts
 General structure for a node js application is one which has a set of files :
  Makefile , app.js , bin/ , package.json , public/ , routes/ , views/
  The next stage is to install the dependencies required to run the application. For Node.js this means running NPM install.
@@ -94,7 +93,7 @@ After we've installed our dependencies, we want to copy over the rest of our app
   ```
   docker run -d --name my-production-running-app __-e NODE_ENV=production__ -p 3000:3000 my-nodejs-app
   ```
- ###  SCENARIO : Optimise Dockerfile using the OnBuild instruction
+ ### 4.0 SCENARIO : Optimise Dockerfile using the OnBuild instruction
    While Dockerfile's are executed in order from top to bottom, we can trigger an instruction to be executed later when the image is used as the base for another image.The result is you can delay your execution to be dependent on the application which you're building, for example the application's package.json file.
 Below is the Node.js OnBuild Dockerfile. Unlike in our previous scenario the application specify commands have been prefixed with ONBUILD.
 ```
@@ -108,27 +107,45 @@ CMD [ "npm", "start" ]
 ```
 The result is that we can build this image but the application specific commands won't be executed until the built image is used as a base image. They'll then be executed as part of the base image's build.
 
-### Scenario : .dockerignore (Large temp folders / passwords etc).
+### 5.0 Scenario : .dockerignore (Large temp folders / passwords etc).
   Just like .gitignore use this file to add all filre / folders / expressions to ignore copying to image
   Ignore sending tmp files for filesize calculation to engine during build
 
-### Scenario : Data Containers alternative to -v <host-dir>:<container-dir>
+### 6.0 Scenario : Data Containers alternative to -v <host-dir>:<container-dir>
   __docker ps__  : Data containers are not listed in docker ps
  Sole responsibility is to be a place to store/manage data.Using __busybox__ as the base as it's small and lightweight image.
- 
-  1. Create a Data Container for storing configuration files using 
-     > docker create -v /config --name dataContainer busybox
-  2. Copy config.conf file into our dataContainer and the dir config.
-     > docker cp config.conf dataContainer:/config/
+ 1. Create a Data Container for storing configuration files using 
+    > docker create -v /config --name dataContainer busybox
+ 2. Copy config.conf file into our dataContainer and the dir config.
+    > docker cp config.conf dataContainer:/config/
  
  #### Mount volumes FROM
  Now our Data Container has our config, we can reference the container when we launch dependent containers requiring the configuration file.Using the __--volumes-from__ <container> option we can use the mount volumes from other containers inside the container being launched. 
-  3. launch an Ubuntu container which has reference to our Data Container. When we list the config directory, it will show the files from the attached(/mounted dataContainer) container.
-    > docker run --volumes-from dataContainer ubuntu ls /config
-    >  * /config directory already existed then, the volumes-from would override and be the directory used*
+ 3. launch an Ubuntu container which has reference to our Data Container. When we list the config directory, it will show the files from the attached(/mounted dataContainer) container.
+   > docker run --volumes-from dataContainer ubuntu ls /config
+   >  * /config directory already existed then, the volumes-from would override and be the directory used*
 
-  4. Export / Import Containers( DATA )
-     > docker export dataContainer > dataContainer.tar
-     > docker import dataContainer.tar
+ 4. Export / Import Containers( DATA )
+   > docker export dataContainer > dataContainer.tar
+   > docker import dataContainer.tar
   
+### 7.0 Multiple containers intercommunication
+  Illustration on how the application container will connect to datastore ( Redis e.g ). The key aspect when creating a link is the friendly name of the container.
+  
+  1. Start Data Store ( start redis server with friendly name redis-server )
+     > docker run -d --name redis-server redis
+  2. To connect to a source container use the --link <container-name|id>:<alias> option when launching a new container.The container name refers to the source container we defined in the previous step while the alias defines the friendly name of the host.By setting an alias we separate how our application is configured to how the infrastructure is called.Bring up a Alpine container which is linked to our redis-server. We've defined the alias as redis
+   i)  First, Docker will set some environment variables based on the linked to the container
+       > docker run --link redis-server:redis alpine env
+  ii)  Docker will update the HOSTS file of the container with an entry for our source container with three names, the original, the alias and the hash-id. Output the containers host entry using cat /etc/hosts
+    > docker run --link redis-server:redis alpine cat /etc/hosts
+    > 172.18.0.2      redis f53b3d584a47 redis-server
+ iii) ping the source container in the same way as if it were a server running in your network.
+      > docker run --link redis-server:redis alpine ping -c 1 redis
  
+ 
+  
+  
+   
+    
+  
