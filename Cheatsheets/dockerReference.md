@@ -113,15 +113,15 @@ CMD [ "npm", "start" ]
 The result is that we can build this image but the application specific commands won't be executed until the built image is used as a base image. They'll then be executed as part of the base image's build.
 
 ### Scenario : .dockerignore (Large temp folders / passwords etc).
-    Just like .gitignore use this file to add all filre / folders / expressions to ignore copying to image
-    Ignore sending tmp files for filesize calculation to engine during build
+  Just like .gitignore use this file to add all filre / folders / expressions to ignore copying to image
+  Ignore sending tmp files for filesize calculation to engine during build
 
 ### Scenario : Data Containers alternative to -v <host-dir>:<container-dir>
-    sole responsibility is to be a place to store/manage data.
-    use busybox as the base as it's small and lightweight
- 
+    Note : __docker ps__  Data containers are not listed in docker ps
+    Sole responsibility is to be a place to store/manage data.using __busybox__ as the base as it's small and lightweight
     Create a Data Container for storing configuration files using 
-    > Create a Data Container for storing configuration files using 
-    
+      > Create a Data Container for storing configuration files using 
+    copy config.conf file into our dataContainer and the dir config.
+       > docker cp config.conf dataContainer:/config/
     
  
