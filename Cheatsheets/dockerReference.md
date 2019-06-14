@@ -17,36 +17,39 @@
   docker run ubuntu ps  // launches an Ubuntu container and executes the command ps
   ```
 #### STATUS commands
- > docker ps        // list all running containers
- > docker inspect <friendly-name| container-id>   // more details of the running container
- > docker logs <friendly-name| container-id>   // display messages the container has written to std error or stdout
- > docker images    // list os all images on the host
-
+  ```
+  docker ps        // list all running containers
+  docker inspect <friendly-name| container-id>   // more details of the running container
+  docker logs <friendly-name| container-id>   // display messages the container has written to std error or stdout
+  docker images    // list os all images on the host
+  ```
 #### PERSIST data external to the container as it gets destroyed 
   // Containers are designed to be stateless.Binding of volumes using options
   // option -v <host-dir>:<container-dir>
   // Docker uses $PWD as a placeholder for the current directory.
-  
+  ```
   docker run -d --name redisMapped -v /opt/docker/data/redis:/data redispwd
   docker run -d --name redisMapped -v "$PWD/data"
-
+  ```
 ### SCENARIO 
 How to create a Docker Image for running a static HTML website using Nginx. Docker Images are built based on the contents of a Dockerfile.Note Dockerfile should be at the root folder where other needful files are stored.
 
 #### CREATE a Dockerfile and also have some index.html in the same location
 Dockerfile -->
+  ```
   *FROM nginx:alpine
   COPY index.html /usr/share/nginx/html/index.html
   EXPOSE 80
   CMD ["nginx", "-g", "daemon off;"]*
-
+  ```
 #### BUILD Dockerfile 
+  // The -t parameter allows you to specify a tag, commonly used as a version number
+  ```
   docker build -t <build-directory>
-      // The -t parameter allows you to specify a tag, commonly used as a version number
   docker build -t webserver-image:v1 . // built image will have tag of v1
   docker images      // list all images on the host
   docker build -t my-nginx-image:latest .
-
+  ```
 1. __RUN__ <command> allows you to execute any command as you would at a command prompt, for example installing different application packages or running a build command. The results of the RUN are persisted to the image so it's important not to leave any unnecessary or temporary files on the disk as these will be included in the image.
 
 2. __COPY__ <src> <dest> allows you to copy files from the directory containing the Dockerfile to the container's image. This is extremely useful for source code and assets that you want to be deployed inside your container
@@ -56,10 +59,11 @@ Dockerfile -->
 In this example, NGINX would be the entrypoint with -g daemon off; the default command.
 
 #### Exposing ports in Dockerfile 
+  ```
   EXPOSE <port>   // instruct image to expose the specific port when run in container
   EXPOSE 80 443   // expose specific ports
   EXPOSE 8000-8900 // expose range of ports
-
+  ```
 ### Scenario : how to deploy a Node.js application within a container + CACHE Concepts
 General structure for a node js application is one which has a set of files :
  Makefile , app.js , bin/ , package.json , public/ , routes/ , views/
@@ -87,6 +91,5 @@ After we've installed our dependencies, we want to copy over the rest of our app
    
  #### ENVIRONMENT VARIABLE
   environment variables can be defined when we launch the container. E.g with Node.js applications, define an environment variable for NODE_ENV when running in production.Using -e option, set the name and value as 
-  __-e NODE_ENV=production__
+ > __-e NODE_ENV=production__
   docker run -d --name my-production-running-app __-e NODE_ENV=production__ -p 3000:3000 my-nodejs-app
-
