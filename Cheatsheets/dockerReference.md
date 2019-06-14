@@ -14,23 +14,21 @@
 #### RUN Foreground 
   ```
   docker run -it ubuntu bash   // access bash shell inside of a container which was just run
-  docker run ubuntu ps  // launches an Ubuntu container and executes the command ps
+  docker run ubuntu ps         // launches an Ubuntu container and executes the command ps
   ```
 #### STATUS commands
   ```
-  docker ps        // list all running containers
-  docker inspect <friendly-name| container-id>   // more details of the running container
-  docker logs <friendly-name| container-id>   // display messages the container has written to std error or stdout
-  docker images    // list os all images on the host
+  docker ps                                     // list all running containers
+  docker inspect <friendly-name| container-id>  // more details of the running container
+  docker logs <friendly-name| container-id>     // logs, the container wrote to stderr/stdout
+  docker images                                 // list os all images on the host
   ```
 #### PERSIST data external to the container as it gets destroyed 
-  // Containers are designed to be stateless.Binding of volumes using options
-  // option -v <host-dir>:<container-dir>
-  // Docker uses $PWD as a placeholder for the current directory.
-  ```
-  docker run -d --name redisMapped -v /opt/docker/data/redis:/data redispwd
-  docker run -d --name redisMapped -v "$PWD/data"
-  ```
+  Containers are designed to be stateless.Binding of volumes using options.Docker uses $PWD as a placeholder for the current directory.
+  option -v <host-dir>:<container-dir>
+  > docker run -d --name redisMapped -v /opt/docker/data/redis:/data redispwd
+  > docker run -d --name redisMapped -v "$PWD/data"
+
 ### SCENARIO 
 How to create a Docker Image for running a static HTML website using Nginx. Docker Images are built based on the contents of a Dockerfile.Note Dockerfile should be at the root folder where other needful files are stored.
 
@@ -97,12 +95,9 @@ After we've installed our dependencies, we want to copy over the rest of our app
   docker run -d --name my-production-running-app __-e NODE_ENV=production__ -p 3000:3000 my-nodejs-app
   ```
  ###  SCENARIO : Optimise Dockerfile using the OnBuild instruction
-   While Dockerfile's are executed in order from top to bottom, we can trigger an instruction to be executed later when the image is used as the base for another image.
-
-The result is you can delay your execution to be dependent on the application which you're building, for example the application's package.json file.
-
+   While Dockerfile's are executed in order from top to bottom, we can trigger an instruction to be executed later when the image is used as the base for another image.The result is you can delay your execution to be dependent on the application which you're building, for example the application's package.json file.
 Below is the Node.js OnBuild Dockerfile. Unlike in our previous scenario the application specify commands have been prefixed with ONBUILD.
-
+```
 FROM node:7
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
@@ -110,6 +105,7 @@ ONBUILD COPY package.json /usr/src/app/
 ONBUILD RUN npm install
 ONBUILD COPY . /usr/src/app
 CMD [ "npm", "start" ]
+```
 The result is that we can build this image but the application specific commands won't be executed until the built image is used as a base image. They'll then be executed as part of the base image's build.
 
 ### Scenario : .dockerignore (Large temp folders / passwords etc).
@@ -120,8 +116,12 @@ The result is that we can build this image but the application specific commands
     Note : __docker ps__  Data containers are not listed in docker ps
     Sole responsibility is to be a place to store/manage data.using __busybox__ as the base as it's small and lightweight
     Create a Data Container for storing configuration files using 
-      > Create a Data Container for storing configuration files using 
+> Create a Data Container for storing configuration files using 
     copy config.conf file into our dataContainer and the dir config.
-       > docker cp config.conf dataContainer:/config/
+> docker cp config.conf dataContainer:/config/
+ 
+ #### Mount volumes
+ Now our Data Container has our config, we can reference the container when we launch dependent containers requiring the configuration file.Using the __--volumes-from__ <container> option we can use the mount volumes from other containers inside the container being launched. In this case, we'll launch an Ubuntu container which has reference to our Data Container. When we list the config directory, it will show the files from the attached container.
     
+> docker run --volumes-from dataContainer ubuntu ls /config
  
