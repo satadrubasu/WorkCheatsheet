@@ -146,3 +146,51 @@ The result is that we can build this image but the application specific commands
  ping the source container in the same way as if it were a server running in your network.
     
     > docker run --link redis-server:redis alpine ping -c 1 redis
+    
+### 8.0 Scenario : Docker networking ( Using DNS / Naming server ) /etc/resolv.conf
+ Approach 1 --> --link which updates the /etc/hosts and environment vars and allow containers to discover and communicate.
+ Approach 2 --> __docker Network__ where all containers are connected to,solves autoscaling better
+                 With this approach the /etc/hosts and env variables are not updated
+                 EMBEDDED DNS Server assigned to all containers via IP __127.0.0.11__ and set in __resolv.conf __
+                 
+  #### Create Network with name backend-network
+    > docker network create backend-network
+  #### Connect to network while running a container
+    > docker run -d --name=redis --net=backend-network redis
+  #### Query DNS server entry once a container is wired to created network
+    > docker run --net=backend-network alpine cat /etc/resolv.conf
+   When containers attempt to access other containers via a well-known name, such as Redis, the DNS server will return the IP address of the correct Container. In this case, the fully qualified name of Redis will be redis.backend-network.
+    
+    > docker run --net=backend-network alpine ping -c1 redis
+    
+ __Supports for multiple networks and containers being attached to more than one network at a time.__
+   Note in the second command below __connect__ can be used to associate a container with a network apart from during a run
+   
+  #### Create another network ( frontend-network )
+    > docker network create frontend-network
+    > docker network connect frontend-network redis
+    > docker run -d -p 3000:3000 --net=frontend-network katacoda/redis-node-docker-example
+  
+  #### Connect container with an alias
+   Following command will connect our Redis instance to the frontend-network with the alias of db.When containers attempt to access a service via the name db, they will be given the IP address of our Redis container.
+     
+     > docker network create frontend-network2
+     > docker network connect --alias db frontend-network2 redis
+     > docker run --net=frontend-network2 alpine ping -c1 db
+     
+  #### Network Status and inspection / disconnect container
+  
+    > docker network ls
+    > docker network inspect frontend-network
+    > docker network disconnect frontend-network redis
+ 
+ ### 9.0 Scenario : PERSISTING DATA USING VOLUMES
+   Docker Volumes allow directories to be shared between containers and container versions.
+   Docker Volumes allows you to upgrade containers, restart machines and share data without data loss. This is essential when updating database or application versions.Docker Volumes allow directories to be shared between containers and container versions.Docker Volumes allows you to upgrade containers, restart machines and share data without data loss. This is essential when updating database or application versions.
+    
+   #### Create data volume with -v
+    > docker run  -v /docker/redis-data:/data \
+    > --name r1 -d redis \
+    > redis-server --appendonly yes
+     
+    
