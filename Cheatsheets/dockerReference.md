@@ -217,4 +217,31 @@ This allows us to access volumes from other containers without having to be conc
      > docker run -v /docker/redis-data:/data:ro -it ubuntu rm -rf /data
      
    
+### 10.0 Scenario : MANAGING LOGS
+  When we start a container, Docker will track the Standard Out and Standard Error outputs from the process and make them available via the client.y default, the Docker logs are outputting using the json-file logger meaning the output stored in a JSON file on the host. This can result in large files filling the disk. As a result, you can change the log driver to move to a different destination.
+    
+    > docker logs redis-server
    
+ #### SysLog  
+   The Syslog log driver will write all the container logs to the central syslog on the host.This log-driver is designed to be used when syslog is being collected and aggregated by an external system.
+     Command to Redirect the redis logs to syslog:
+      
+      > docker run -d --name redis-syslog --log-driver=syslog redis
+ ####  Accessing Logs :
+   Attempting to view the logs using the client you'll recieve the error FATA[0000] "logs" command is supported only for "json-file" logging driver.Instead, you need to access them via the syslog stream
+      
+ #### Disable Logging ( For very verbose containers )
+    > docker run -d --name redis-none --log-driver=none redis
+    
+ #### Which Configuration (*inspect* command )
+    > docker inspect --format '{{ .HostConfig.LogConfig }}' redis-server
+    > docker inspect --format '{{ .HostConfig.LogConfig }}' redis-syslog
+    > docker inspect --format '{{ .HostConfig.LogConfig }}' redis-none
+
+### 11.0 Scenario : PERSISTING DATA USING VOLUMES
+  
+ 
+   
+  
+ 
+
