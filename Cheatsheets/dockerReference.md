@@ -133,13 +133,16 @@ The result is that we can build this image but the application specific commands
   Illustration on how the application container will connect to datastore ( Redis e.g ). The key aspect when creating a link is the friendly name of the container.
   
  1. Start Data Store ( start redis server with friendly name redis-server )
-     > docker run -d --name redis-server redis
+   > docker run -d --name redis-server redis
+    
  2. To connect to a source container use the --link <container-name|id>:<alias> option when launching a new container.The container name refers to the source container we defined in the previous step while the alias defines the friendly name of the host.By setting an alias we separate how our application is configured to how the infrastructure is called.Bring up a Alpine container which is linked to our redis-server. Defined the alias as redis
  a) First, Docker will set some environment variables based on the linked to the container
-     > docker run --link redis-server:redis alpine env
+   > docker run --link redis-server:redis alpine env
  
  b) Docker will update the HOSTS file of the container with an entry for our source container with three names, the original, the alias and the hash-id. Output the containers host entry using cat /etc/hosts
+    
     > docker run --link redis-server:redis alpine cat /etc/hosts
     > 172.18.0.2      redis f53b3d584a47 redis-server
  ping the source container in the same way as if it were a server running in your network.
+    
     > docker run --link redis-server:redis alpine ping -c 1 redis
