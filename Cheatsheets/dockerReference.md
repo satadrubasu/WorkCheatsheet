@@ -1,4 +1,5 @@
 ### Docker Reference commands usecase based
+###### ( All notes from practice on course at www.katacoda.com )
  
 #### 1.1 SEARCH in the docker repos
   > docker search redis
@@ -192,5 +193,28 @@ The result is that we can build this image but the application specific commands
     > docker run  -v /docker/redis-data:/data \
     > --name r1 -d redis \
     > redis-server --appendonly yes
-     
+   We can pipe data into the Redis instance using the following command.
+   
+    > cat data | docker exec -i r1 redis-cli --pipe
+  Redis will save this data to disk. On the host we can see the mapped direct which should contain the Redis data file.
     
+    > ls /docker/redis-data
+This same directory can be mounted to a second container. One usage is to have a Docker Container performing backup operations on your data.
+    
+    > docker run  -v /docker/redis-data:/backup ubuntu ls /backup
+    
+  #### Shared Volumes
+   Data Volumes mapped to the host are great for persisting data. However, to gain access to them from another container you need to know the exact path which can make it error-prone.
+An alternate approach is to use __-volumes-from__. The parameter maps the mapped volumes from the source container to the container being launched.
+In this case, we're mapping our Redis container's volume to an Ubuntu container. The /data directory only exists within our Redis container, however, because of -volumes-from our Ubuntu container can access the data.
+    
+    > docker run --volumes-from r1 -it ubuntu ls /data
+This allows us to access volumes from other containers without having to be concerned how they're persisted on the host.
+   
+  #### Permissions on volumes
+   Available options are there e.g ro would mean read only
+     
+     > docker run -v /docker/redis-data:/data:ro -it ubuntu rm -rf /data
+     
+   
+   
