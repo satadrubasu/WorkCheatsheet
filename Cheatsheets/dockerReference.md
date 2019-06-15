@@ -123,7 +123,7 @@ The result is that we can build this image but the application specific commands
  Now our Data Container has our config, we can reference the container when we launch dependent containers requiring the configuration file.Using the __--volumes-from__ <container> option we can use the mount volumes from other containers inside the container being launched. 
  3. launch an Ubuntu container which has reference to our Data Container. When we list the config directory, it will show the files from the attached(/mounted dataContainer) container.
    > docker run --volumes-from dataContainer ubuntu ls /config
-   >  * /config directory already existed then, the volumes-from would override and be the directory used*
+ * /config directory already existed then, the volumes-from would override and be the directory used*
 
  4. Export / Import Containers( DATA )
    > docker export dataContainer > dataContainer.tar
@@ -135,17 +135,10 @@ The result is that we can build this image but the application specific commands
   1. Start Data Store ( start redis server with friendly name redis-server )
      > docker run -d --name redis-server redis
   2. To connect to a source container use the --link <container-name|id>:<alias> option when launching a new container.The container name refers to the source container we defined in the previous step while the alias defines the friendly name of the host.By setting an alias we separate how our application is configured to how the infrastructure is called.Bring up a Alpine container which is linked to our redis-server. We've defined the alias as redis
-   i)  First, Docker will set some environment variables based on the linked to the container
-       > docker run --link redis-server:redis alpine env
-  ii)  Docker will update the HOSTS file of the container with an entry for our source container with three names, the original, the alias and the hash-id. Output the containers host entry using cat /etc/hosts
+ i)  First, Docker will set some environment variables based on the linked to the container
+    > docker run --link redis-server:redis alpine env
+ii)  Docker will update the HOSTS file of the container with an entry for our source container with three names, the original, the alias and the hash-id. Output the containers host entry using cat /etc/hosts
     > docker run --link redis-server:redis alpine cat /etc/hosts
     > 172.18.0.2      redis f53b3d584a47 redis-server
- iii) ping the source container in the same way as if it were a server running in your network.
-      > docker run --link redis-server:redis alpine ping -c 1 redis
- 
- 
-  
-  
-   
-    
-  
+iii) ping the source container in the same way as if it were a server running in your network.
+    > docker run --link redis-server:redis alpine ping -c 1 redis
