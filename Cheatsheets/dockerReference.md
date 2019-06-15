@@ -141,6 +141,5 @@ The result is that we can build this image but the application specific commands
  b) Docker will update the HOSTS file of the container with an entry for our source container with three names, the original, the alias and the hash-id. Output the containers host entry using cat /etc/hosts
     > docker run --link redis-server:redis alpine cat /etc/hosts
     > 172.18.0.2      redis f53b3d584a47 redis-server
-
  ping the source container in the same way as if it were a server running in your network.
     > docker run --link redis-server:redis alpine ping -c 1 redis
