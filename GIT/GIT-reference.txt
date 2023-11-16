@@ -13,4 +13,45 @@
       $ git config --global user.email "satadru.basu@gmail.com"
       $ git config --global help.autocorrect 1
       
-      added line1
+############# TRACK HISTORY RELATED Commands
+1. GIT LOG/show
+-----------------------------------------
+ git show <commitid>
+ git log --oneline --graph --decorate
+ git log <commit#1>...<commit#2>
+ git log --since="3 days ago"
+
+2.For a specific file
+-----------------------------------------
+ - git log -- <filename>
+
+
+Setting a git alias:  
+>  git config --global alias.hist "log --all --graph --decorate --oneline"
+> vi ~/.gitconfig
+
+##########
+git pull origin main
+git push origin main
+
+
+####### BRANCH RELATED
+git branch -a 
+git checkout <branchname>
+git branch -m <existingBranchName> <newBranchName>
+git branch -d  <newBranchName>    ( delete a branch )
+
+
+git checkout -b <newBranchFromCurrentBranch>
+git checkout main   ( switch back to main branch )
+
+git diff main newBranchFromCurrentBranch
+
+
+
+###### REBASE FEATURE BRANCH From MAIN 
+
+(myfeature) myRepo $ git rebase main
+
+
+
